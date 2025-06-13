@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div className="App" style={{ maxWidth: 600, margin: "40px auto", padding: 20 }}>
-      <h1>🌀 $CYCLE 1:1 Token Match Portal</h1>
+      <h1>🌀 $CYCLE 1:1 Token 🔥 Portal</h1>
 
       <p><strong>Send tokens to:</strong><br /><code>{VAULT_ADDRESS}</code></p>
 
