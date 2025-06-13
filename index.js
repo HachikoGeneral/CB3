@@ -20,7 +20,7 @@ const FALLBACK_ADDRESS = new PublicKey(process.env.FALLBACK_ADDRESS);
 
 // ✅ Approved tokens list
 const approvedTokens = {
-  HouseCoin: "MintAddress_HouseCoinHere",
+  BitcoinBob: "MintAddress_HouseCoinHere",
   AnotherToken: "MintAddress_AnotherTokenHere",
 };
 
