@@ -11,7 +11,7 @@ function App() {
   const VAULT_ADDRESS = "CL2MjoDj4K2ACEFTnvRnKSTJdka2n1Nk585CYxgeik7M";
 
   const approvedTokens = {
-    "DL9sLSN488yMbots3wsbzHZ3UpKSkM42kr1y13CPpump": "HouseCoin",
+    "DL9sLSN488yMbots3wsbzHZ3UpKSkM42kr1y13CPpump": "BitcoinBob",
   };
 
   const handleSubmit = async (e) => {
