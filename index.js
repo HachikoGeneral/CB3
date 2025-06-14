@@ -39,36 +39,33 @@ async function checkSenderDeposit({
   expectedLamports,
   tokenMint,
 }) {
+  // Get last 10 signatures involving vault token account
   const signatures = await connection.getSignaturesForAddress(vaultTokenAccount, { limit: 10 });
 
+  // Get sender's associated token account
+  const senderTokenAccount = await getAssociatedTokenAddress(tokenMint, senderPubkey);
+
   for (const sigInfo of signatures) {
-    const tx = await connection.getParsedTransaction(sigInfo.signature, {
-      commitment: "confirmed",
-    });
+    const tx = await connection.getParsedTransaction(sigInfo.signature, { commitment: "confirmed" });
+    if (!tx) continue;
 
-    if (!tx || !tx.transaction?.message?.instructions) continue;
-
-    const involvedAddresses = tx.transaction.message.accountKeys.map(k => k.pubkey.toBase58());
     const instructions = tx.transaction.message.instructions;
-
     for (const ix of instructions) {
-      if (ix.program === "spl-token" && ix.parsed?.type === "transfer") {
-        const { source, destination, amount, mint } = ix.parsed.info;
-
-        if (
-          destination === vaultTokenAccount.toBase58() &&
-          mint === tokenMint.toBase58() &&
-          BigInt(amount) === expectedLamports &&
-          involvedAddresses.includes(senderPubkey.toBase58())
-        ) {
-          console.log(`✅ Valid ${mint} transfer found in tx: ${sigInfo.signature}`);
-          return true;
-        }
+      if (
+        ix.program === "spl-token" &&
+        ix.parsed?.type === "transfer" &&
+        ix.parsed.info.mint === tokenMint.toBase58() &&
+        ix.parsed.info.source === senderTokenAccount.toBase58() &&
+        ix.parsed.info.destination === vaultTokenAccount.toBase58() &&
+        BigInt(ix.parsed.info.amount) === expectedLamports
+      ) {
+        console.log(`✅ Found matching transfer in tx ${sigInfo.signature}`);
+        return true;
       }
     }
   }
 
-  console.warn(`❌ No valid ${tokenMint.toBase58()} transfer found involving ${senderPubkey.toBase58()}`);
+  console.warn(`❌ No valid ${tokenMint.toBase58()} transfer found involving sender ${senderPubkey.toBase58()}`);
   return false;
 }
 
