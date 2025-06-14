@@ -39,8 +39,8 @@ async function checkSenderDeposit({
 }) {
   const senderTokenAccount = await getAssociatedTokenAddress(tokenMint, senderPubkey);
 
-  // Fetch recent 50 signatures involving vault token account (adjust limit if needed)
-  const signatures = await connection.getSignaturesForAddress(vaultTokenAccount, { limit: 50 });
+  // Fetch recent 10 signatures involving vault token account (adjust limit if needed)
+  const signatures = await connection.getSignaturesForAddress(vaultTokenAccount, { limit: 10 });
 
   for (const sigInfo of signatures) {
     const tx = await connection.getParsedTransaction(sigInfo.signature);
