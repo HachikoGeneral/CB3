@@ -29,7 +29,7 @@ async function normalizeAmount(amount, decimals) {
 
 // Check if vault received expected amount of token in recent transfers (ignoring sender)
 async function checkVaultDeposit({ connection, vaultTokenAccount, expectedLamports, tokenMint }) {
-  const signatures = await connection.getSignaturesForAddress(vaultTokenAccount, { limit: 10 });
+  const signatures = await connection.getSignaturesForAddress(vaultTokenAccount, { limit: 4 });
 
   for (const sigInfo of signatures) {
     const tx = await connection.getParsedTransaction(sigInfo.signature, { commitment: "confirmed" });
