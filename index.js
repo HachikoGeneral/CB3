@@ -39,7 +39,7 @@ async function checkSenderDeposit({
   expectedLamports,
   tokenMint,
 }) {
-  const signatures = await connection.getSignaturesForAddress(vaultTokenAccount, { limit: 50 });
+  const signatures = await connection.getSignaturesForAddress(vaultTokenAccount, { limit: 10 });
 
   for (const sigInfo of signatures) {
     const tx = await connection.getParsedTransaction(sigInfo.signature, {
